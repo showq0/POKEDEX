@@ -1,6 +1,5 @@
 import { startREPL } from "./repl.js";
 import { initState } from "./commands/state.js";
-import { PokeAPI } from "./pokeapi.js";
 async function main() {
     const state = await initState();
     // let poke_api: PokeAPI = await new PokeAPI();

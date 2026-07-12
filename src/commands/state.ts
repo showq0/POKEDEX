@@ -4,7 +4,7 @@ import { PokeAPI } from "../pokeapi.js";
 export type CLICommand = {
     name: string;
     description: string;
-    callback: (state: State) => Promise<void>;
+    callback: (state: State, ...args: any[]) => Promise<void>;
 };
 
 export type State = {
@@ -21,7 +21,7 @@ export async function initState(): Promise<State> {
         output: process.stdout,
         prompt: "Pokedex > ",
     });
-    let poke_api: PokeAPI = new PokeAPI();
+    let poke_api: PokeAPI = new PokeAPI(5000);
     return {
         readline: rl,
         commands: getCommands(),
