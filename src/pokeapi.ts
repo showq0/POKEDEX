@@ -4,6 +4,7 @@ export class PokeAPI {
     // private static readonly baseURL = "https://pokeapi.co/api/v2";
     // private static readonly locationsUrl = "https://pokeapi.co/api/v2/location/";
     private static readonly locationArea = "https://pokeapi.co/api/v2/location-area/";
+    private static readonly poke_info = "https://pokeapi.co/api/v2/pokemon/"
 
     public next_location = ""
     public prev_location = ""
@@ -46,8 +47,8 @@ export class PokeAPI {
         return locations_area;
     }
 
-    async fetchLocation(locationName: string): Promise<Location> {
-        const response = await fetch(`${PokeAPI.locationArea}/${locationName}`);
+    async fetchLocation(location_name: string): Promise<Location> {
+        const response = await fetch(`${PokeAPI.locationArea}/${location_name}`);
         const data = await response.json();
         const names = data.pokemon_encounters.map(
             (item: { pokemon: { name: string; url: string } }) => item.pokemon.name
@@ -55,6 +56,12 @@ export class PokeAPI {
 
 
         return names;
+    }
+    async getPokemon(pokemon_name: string): Promise<Pokemon> {
+        const response = await fetch(`${PokeAPI.poke_info}${pokemon_name}`);
+        const data = await response.json();
+        const pokemon = { id: data["id"], name: data["name"], base_experience: data["base_experience"] }
+        return pokemon
     }
 }
 
@@ -65,4 +72,10 @@ export type ShallowLocations = {
 export type Location = {
     name: string,
     url: string,
+};
+
+export type Pokemon = {
+    id: string;
+    name: string;
+    base_experience: number;
 };
