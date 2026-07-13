@@ -60,7 +60,19 @@ export class PokeAPI {
     async getPokemon(pokemon_name: string): Promise<Pokemon> {
         const response = await fetch(`${PokeAPI.poke_info}${pokemon_name}`);
         const data = await response.json();
-        const pokemon = { id: data["id"], name: data["name"], base_experience: data["base_experience"] }
+        const pokemon: Pokemon = {
+            id: data["id"],
+            name: data["name"],
+            base_experience: data["base_experience"],
+            height: data["height"],
+            weight: data["weight"],
+            stats: data["stats"].map((stat: any) => ({
+                name: stat.stat.name,
+                value: stat.base_stat
+            })),
+            types: data["types"].map((type: any) => type.type.name)
+        };
+        // console.log(pokemon)
         return pokemon
     }
 }
@@ -78,4 +90,8 @@ export type Pokemon = {
     id: string;
     name: string;
     base_experience: number;
+    height: number;
+    weight: number;
+    stats: [{ name: string, value: number; }];
+    types: [{ name: string }];
 };
