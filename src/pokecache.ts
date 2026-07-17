@@ -6,8 +6,8 @@ export type CacheEntry<T> = {
 };
 
 
-export class Cache {
-    #cache = new Map<string, CacheEntry<any>>();
+export class Cache<T> {
+    #cache = new Map<string, CacheEntry<T>>();
     #reapIntervalId: NodeJS.Timeout | undefined = undefined;
     #interval: number = 0;
 
@@ -16,14 +16,17 @@ export class Cache {
         this.#startReapLoop();
     }
 
-    add<T>(key: string, val: T) {
+    add(key: string, val: T) {
 
-        this.#cache.set(key, { createdAt: Date.now(), val })
+        this.#cache.set(key, {
+            createdAt: Date.now(),
+            val,
+        });
     }
 
     get<T>(key: string) {
 
-        return this.#cache.get(key,) || undefined
+        return this.#cache.get(key,)
     }
     #reap() {
         // delete older data (older than interval 

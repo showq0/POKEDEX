@@ -10,7 +10,7 @@ export class PokeAPI {
     public prev_location = ""
     public pokicache;
     constructor(interval: number) {
-        this.pokicache = new Cache(interval);
+        this.pokicache = new Cache<LocationResponse>(interval);
     }
     async fetchLocations(pageURL?: string): Promise<ShallowLocations> {
         let url = "";
@@ -23,7 +23,7 @@ export class PokeAPI {
         const cashed_response = this.pokicache.get(url);
         let results;
         if (cashed_response) {
-            const data = await cashed_response.val;
+            const data = cashed_response.val;
             results = data["results"]
         }
         else {
@@ -94,4 +94,13 @@ export type Pokemon = {
     weight: number;
     stats: [{ name: string, value: number; }];
     types: [{ name: string }];
+};
+type LocationResponse = {
+    count: number;
+    next: string;
+    previous: string;
+    results: {
+        name: string;
+        url: string;
+    }[];
 };

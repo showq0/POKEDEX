@@ -14,7 +14,7 @@ export async function startREPL(state: State) {
             // console.log(`your entered: ${input}`);
             let cleaned_output = cleanInput(input);
             const cmomand_name = cleaned_output[0]
-            const args = cleaned_output[1] || undefined;
+            const args = cleaned_output[1];
             const command = all_commands[cmomand_name]
             if (command) {
                 await command.callback(state, args)
